@@ -5,6 +5,7 @@ from meross_iot.cloud.devices.power_plugs import GenericPlug
 from meross_iot.cloud.devices.door_openers import GenericGarageDoorOpener
 import time
 import os
+import sys
 
 
 EMAIL = os.environ.get('MEROSS_EMAIL')
@@ -13,12 +14,15 @@ PASSWORD = os.environ.get('MEROSS_PASSWORD')
 def event_handler(eventobj):
     if eventobj.event_type == MerossEventType.DEVICE_ONLINE_STATUS:
         print("Device online status changed: %s went %s" % (eventobj.device.name, eventobj.status))
+        sys.stdout.flush()
         pass
     elif eventobj.event_type == MerossEventType.DEVICE_SWITCH_STATUS:
         print("Switch state changed: Device %s (channel %d) went %s" % (eventobj.device.name, eventobj.channel_id,
                                                                         eventobj.switch_state))
+        sys.stdout.flush()
     else:
         print(eventobj)
+        sys.stdout.flush()
 
 
 if __name__=='__main__':
@@ -42,6 +46,7 @@ if __name__=='__main__':
 
     while plug.supports_electricity_reading():
         print("Current consumption is: %s" % str(plug.get_electricity()))
+        sys.stdout.flush()
         time.sleep(5)
 
     # At this point, we are all done playing with the library, so we gracefully disconnect and clean resources.
