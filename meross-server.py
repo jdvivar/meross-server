@@ -66,8 +66,11 @@ if __name__=='__main__':
 
     while plug.supports_electricity_reading():
         print("Current consumption is: %s" % str(plug.get_electricity()))
-        doc_ref = db.collection(u'plug-logs').add(plug.get_electricity())
-        doc_ref.set({ u'date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") })
+        doc_ref = db.collection(u'plug-logs').document()
+        doc_ref.set(plug.get_electricity())
+        doc_ref.update({
+            u'timestamp': firestore.SERVER_TIMESTAMP
+        })
         sys.stdout.flush()
         time.sleep(5)
 
