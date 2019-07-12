@@ -72,7 +72,7 @@ if __name__=='__main__':
             u'timestamp': firestore.SERVER_TIMESTAMP
         })
         sys.stdout.flush()
-        time.sleep(5)
+        time.sleep(int(os.environ.get('SLEEP')) or 300)
 
     # At this point, we are all done playing with the library, so we gracefully disconnect and clean resources.
     print("We are done playing. Cleaning resources...")
